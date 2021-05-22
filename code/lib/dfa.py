@@ -7,7 +7,7 @@ class EndType(Enum):
     INCLUDE = 1  # 匹配状态，但包含当前字符
 
 
-class Dfa:
+class DfaState:
 
     def __init__(self, element, edgeList):
         self.element = element  # 状态元素，为Element类型
@@ -28,3 +28,7 @@ class DfaEdge:
     def __init__(self, driverChar, nextState):
         self.driverChar = driverChar  # 驱动字符，为一个char字符，或是为空
         self.nextState = nextState  # 跳转状态，为Dfa类型
+
+
+def DfaConstruct():
+    pass

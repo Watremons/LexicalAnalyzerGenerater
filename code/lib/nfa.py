@@ -7,14 +7,14 @@ class EndType(Enum):
     INCLUDE = 1  # 匹配状态，但包含当前字符
 
 
-class Dfa:
+class NfaState:
 
     def __init__(self, element, edgeList):
         self.element = element  # 状态元素，为Element类型
         self.edgeList = edgeList  # 状态出边，为EdgeList类型
 
 
-class DfaGraph:
+class NfaGraph:
 
     def __init__(self, startState, endState, endStateType, endStateClass):
         self.startState = startState  # 起始状态，为Dfa类型
@@ -23,7 +23,7 @@ class DfaGraph:
         self.endStateClass = endStateClass  # 结束得到的类的类型，为LexcialType枚举类型
 
 
-class DfaEdge:
+class NfaEdge:
 
     def __init__(self, driverChar, nextState):
         self.driverChar = driverChar  # 驱动字符，为一个char字符

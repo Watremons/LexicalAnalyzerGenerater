@@ -1,5 +1,5 @@
 from enum import Enum
-from element import Element, ElementType
+from lib.element import Element, ElementType
 
 
 # 定义正则表达式词法类型
@@ -11,9 +11,9 @@ class LexcialType(Enum):
 
 class RegularExpression:
 
-    def __init__(self, headElement: Element, expression: str, lexcialClass: LexcialType, remark: str):
+    def __init__(self, headElement: Element, expression: list, lexcialClass: LexcialType, remark: str):
         self.headElement = headElement  # 元素头部元素，为Element类型元素
-        self.expression = expression  # 正则表达式的主体部分
+        self.expression = expression  # 正则表达式的主体部分, 用element类型的list表示
         self.lexcialClass = lexcialClass  # 正则表达式的类型，为LexcialType
         self.remark = remark  # 正则表达式注释
 
