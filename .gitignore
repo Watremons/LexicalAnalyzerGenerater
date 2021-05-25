@@ -1,0 +1,7 @@
+*.pyc
+
+/project/__pycache__
+
+/project/lib/__pycache__
+
+/.VSCodeCounter
