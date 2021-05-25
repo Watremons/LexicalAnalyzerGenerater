@@ -1,4 +1,4 @@
-from lib.action import ActionType, ReduceType, Action
+from project.lib.action import ActionType, ReduceType, Action
 
 
 # Function: parse element string to action
@@ -44,6 +44,9 @@ def parseTextToSyntaxTable(actionListText: str, gotoListText: str):
             action = parseElementToAction(element)
             if action is not False:
                 actionList.append(action)
+            else:
+                print("Syntax Table Error: Unknown action occurred")
+                return
         actionTable.append(actionList)
 
     gotoTable = []

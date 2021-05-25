@@ -4,9 +4,6 @@ from project.lib.action import Action, ActionType, ReduceType
 from project.lib.syntaxSymbol import \
     nfaOrCombine, nfaAndCombine, nfaBracketCombine,\
     nfaPlusClosureCombine, nfaClosureCombine, nfaZeroOneCombine, nfaNew
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "\\")
 
 
 def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list:
@@ -21,18 +18,18 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
         index = 0
         length = len(re.expression)
 
-        while (stateStack.count != 0):
-            nowState = stateStack.pop()
-            nowElement = re.expression[index]
-            index = index + 1
+        while (len(stateStack) != 0):
             if index > length:
                 print("Syntax Error: the re is end before get accept state")
                 return "error"
+            nowState = stateStack[-1]
+            nowElement = re.expression[index]
             nowAction = getAction(nowState, nowElement, actionTable)
 
             if nowAction.actionType == ActionType.SHIFT:
                 stateStack.append(nowAction.shiftNum)
                 symbolStack.append(nowElement)
+                index = index + 1
             elif nowAction.actionType == ActionType.REDUCE:
                 if (nowAction.reduceNum == ReduceType.DO_OR):
                     # get 3 object
@@ -67,7 +64,7 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                     symbolStack.pop()
 
                     # do bracket combine and push result
-                    symbolStack.append(nfaBracketCombine(E1, E2))
+                    symbolStack.append(nfaBracketCombine(E1))
 
                     # pop 3 state
                     stateStack.pop()
@@ -75,8 +72,8 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                     stateStack.pop()
                 elif (nowAction.reduceNum == ReduceType.DO_PLUS_CLOSURE):
                     # get 2 object
-                    E1 = symbolStack.pop()
                     symbolStack.pop()
+                    E1 = symbolStack.pop()
 
                     # do plus closure combine and push result
                     symbolStack.append(nfaPlusClosureCombine(E1))
@@ -86,8 +83,8 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                     stateStack.pop()
                 elif (nowAction.reduceNum == ReduceType.DO_CLOSURE):
                     # get 2 object
-                    E1 = symbolStack.pop()
                     symbolStack.pop()
+                    E1 = symbolStack.pop()
 
                     # do closure combine and push result
                     symbolStack.append(nfaClosureCombine(E1))
@@ -97,8 +94,8 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                     stateStack.pop()
                 elif (nowAction.reduceNum == ReduceType.DO_ZERO_ONE):
                     # get 2 object
-                    E1 = symbolStack.pop()
                     symbolStack.pop()
+                    E1 = symbolStack.pop()
 
                     # do zero one combine and push result
                     symbolStack.append(nfaZeroOneCombine(E1))
@@ -121,7 +118,7 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                     print("Unknown Error: get a unknown type of reduce action")
                     return "error"
 
-                backState = stateStack.pop()  # get backState
+                backState = stateStack[-1]  # get backState
                 stateStack.append(gotoTable[backState][0])  # push goto state
             elif nowAction.actionType == ActionType.ACCEPT:
                 break
@@ -132,13 +129,13 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                 print("Unknown Error: get a unknown type of action")
                 return "error"
 
-        if index != length:
+        if index != length-1:
             print("Syntax Error: get accept state but the re is not end")
             return "error"
-        if symbolStack.count != 1:
+        if len(symbolStack) != 1:
             print("Syntax Error: get accept state but the symbols is not reduced")
             return "error"
-        reNfaGraphList.append(symbolStack.pop())
+        reNfaGraphList.append(symbolStack.pop().nfa)
 
     return reNfaGraphList
 
@@ -181,95 +178,97 @@ def generateTestList():
     expression = []
     expression.append(
         Element(
-            elementId=1,
             classType=ElementType.CHARACTOR,
             name="i",
         )
     )
-
     expression.append(
         Element(
-            elementId=2,
             classType=ElementType.OPERATOR,
             name="&",
         )
     )
-
     expression.append(
         Element(
-            elementId=3,
             classType=ElementType.CHARACTOR,
             name="f",
         )
     )
-
     expression.append(
         Element(
-            elementId=4,
             classType=ElementType.OPERATOR,
             name="|",
         )
     )
-
     expression.append(
         Element(
-            elementId=5,
+            classType=ElementType.OPERATOR,
+            name="(",
+        )
+    )
+    expression.append(
+        Element(
             classType=ElementType.CHARACTOR,
             name="e",
         )
     )
-
     expression.append(
         Element(
-            elementId=6,
             classType=ElementType.OPERATOR,
             name="&",
         )
     )
-
     expression.append(
         Element(
-            elementId=7,
             classType=ElementType.CHARACTOR,
             name="l",
         )
     )
-
     expression.append(
         Element(
-            elementId=8,
+            classType=ElementType.OPERATOR,
+            name=")",
+        )
+    )
+    expression.append(
+        Element(
+            classType=ElementType.OPERATOR,
+            name="#",
+        )
+    )
+    expression.append(
+        Element(
             classType=ElementType.OPERATOR,
             name="&",
         )
     )
-
     expression.append(
         Element(
-            elementId=9,
             classType=ElementType.CHARACTOR,
             name="s",
         )
     )
-
     expression.append(
         Element(
-            elementId=10,
             classType=ElementType.OPERATOR,
             name="&",
         )
     )
-
     expression.append(
         Element(
-            elementId=11,
             classType=ElementType.CHARACTOR,
             name="e",
+        )
+    )
+    expression.append(
+        Element(
+            classType=ElementType.OPERATOR,
+            name="$",
         )
     )
 
     re = RegularExpression(
         headElement=Element(
-            0,
             ElementType.VARIANT,
             "testLex",
             "用于测试的元素"
