@@ -35,3 +35,16 @@ class Action:
             return "acc"
         else:
             return "   "
+
+
+if __name__ == "__main__":
+    action = Action(
+        actionType=ActionType.SHIFT,
+        shiftNum=3,
+        reduceNum=ReduceType.DO_NONE
+    )
+
+    if action.actionType == ActionType.SHIFT:
+        print("Yes")
+    else:
+        print("No")
