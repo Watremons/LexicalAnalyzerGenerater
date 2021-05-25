@@ -59,12 +59,27 @@ def doSyntaxAnalysis(reList: list) -> str:
     actionTable, gotoTable = parseTextToSyntaxTable(actionListText, gotoListText)
     # Finished: get action table and gotoT table
 
+    print("Print the action table:")
+    for row in actionTable:
+        for action in row:
+            print(action, end=" ")
+        print()
+    print("Print the goto table:")
+    for row in gotoTable:
+        for goto in row:
+            print(goto, end=" ")
+        print()
+
     reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
-    # unfinished: get nfaGraphList of every regular expression
+    # Finished: get nfaGraphList of every regular expression
     if (reNfaGraphList == "error"):
         print("Syntax Error: Please check your input")
 
+    print("Print the NFA graph")
+    num = 0
     for reNfaGraph in reNfaGraphList:
+        print("NFA graph {}".format(num))
+        num = num + 1
         print(reNfaGraph)
     reDfaTotalGraph = DfaConstruct(reNfaGraphList)
     # unfinished: parse nfa Graph to dfa graph and get total dfa
