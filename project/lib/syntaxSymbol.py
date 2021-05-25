@@ -5,7 +5,7 @@ from project.lib.regularExpression import LexcialType
 
 class E:
     def __init__(self, nfa: NfaGraph):
-        self.nfa = NfaGraph
+        self.nfa = nfa
 
 
 # Function: reduce E to E | E
@@ -50,7 +50,7 @@ def nfaOrCombine(E1: E, E2: E) -> E:
         startState=startState,
         endState=endState,
         endStateType=EndType.INCLUDE,
-        endStateClass=E1.nfa.endStateClass.reType
+        endStateClass=E1.nfa.endStateClass
     )
 
     return E(newNfaGraph)
@@ -65,7 +65,14 @@ def nfaAndCombine(E1: E, E2: E) -> E:
         )
     )
 
-    return E1
+    return E(
+        nfa=NfaGraph(
+            startState=E1.nfa.startState,
+            endState=E2.nfa.endState,
+            endStateType=EndType.INCLUDE,
+            endStateClass=E1.nfa.endStateClass
+        )
+    )
 
 
 # Function: reduce E to (E)
@@ -124,7 +131,7 @@ def nfaNew(element: Element, reType: LexcialType) -> E:
     newEdgeList = []
     newEdgeList.append(
         NfaEdge(
-            driverChar=Element.name,
+            driverChar=element.name,
             nextState=endState
         )
     )
@@ -139,5 +146,5 @@ def nfaNew(element: Element, reType: LexcialType) -> E:
         endStateType=EndType.INCLUDE,
         endStateClass=reType
     )
-
-    return E(newNfaGraph)
+    newE = E(newNfaGraph)
+    return newE
