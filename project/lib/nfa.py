@@ -37,13 +37,15 @@ class NfaGraph:
         returnStr = ""
         stateQueue = [self.startState]
 
-        while stateQueue.count != 0:
+        while len(stateQueue) != 0:
             nowState = stateQueue.pop()
-            for edge in nowState.edgeList:
-                returnStr = returnStr + "{} -> {} by {}\n".format(
-                    nowState.stateId,
-                    edge.nextState,
-                    edge.driverChar
-                )
-                stateQueue.append(edge.nextState)
+            if nowState.visited == 0:
+                for edge in nowState.edgeList:
+                    returnStr = returnStr + "{} -> {} by {}\n".format(
+                        nowState.stateId,
+                        edge.nextState.stateId,
+                        edge.driverChar
+                    )
+                    stateQueue.append(edge.nextState)
+                nowState.visited = 1
         return returnStr
