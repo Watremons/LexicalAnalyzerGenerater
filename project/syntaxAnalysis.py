@@ -1,10 +1,12 @@
-from lib.dfa import DfaState, DfaConstruct
-from lib.nfa import NfaState
-from lib.regularExpression import RegularExpression
+from project.lib.dfa import DfaState, DfaConstruct
+from project.lib.nfa import NfaState
+from project.lib.regularExpression import RegularExpression
 
-from syntaxAnalysisTable import parseElementToAction, parseTextToSyntaxTable
-from syntaxAnalysisLR import doLRSyntaxAnalysis
+from project.syntaxAnalysisTable import parseTextToSyntaxTable
+from project.syntaxAnalysisLR import doLRSyntaxAnalysis, generateTestList
 import os
+import sys
+sys.path.append("../")
 
 
 # Function: get path of analysisTable.txt
@@ -59,7 +61,11 @@ def doSyntaxAnalysis(reList: list) -> str:
 
     reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
     # unfinished: get nfaGraphList of every regular expression
+    if (reNfaGraphList == "error"):
+        print("Syntax Error: Please check your input")
 
+    for reNfaGraph in reNfaGraphList:
+        print(reNfaGraph)
     reDfaTotalGraph = DfaConstruct(reNfaGraphList)
     # unfinished: parse nfa Graph to dfa graph and get total dfa
 
@@ -70,6 +76,6 @@ def doSyntaxAnalysis(reList: list) -> str:
 
 
 if __name__ == "__main__":
-    reList = []
+    reList = generateTestList()
     # reList.append(RegularExpression(,,,,))
     doSyntaxAnalysis(reList)
