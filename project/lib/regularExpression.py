@@ -1,5 +1,5 @@
 from enum import Enum
-from lib.element import Element, ElementType
+from project.lib.element import Element, ElementType
 
 
 # 定义正则表达式词法类型

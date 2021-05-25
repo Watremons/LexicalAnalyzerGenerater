@@ -30,5 +30,5 @@ class DfaEdge:
         self.nextState = nextState  # 跳转状态，为Dfa类型
 
 
-def DfaConstruct():
+def DfaConstruct(reNfaGraphList: list):
     pass
