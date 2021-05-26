@@ -4,6 +4,7 @@ from project.lib.element import Element, ElementType
 
 # 定义正则表达式词法类型
 class LexcialType(Enum):
+    NONE = -1  # 错位类型
     IDENTIFIER = 0  # 正则表达式词法类型为变量
     NUMERIC = 1  # 正则表达式词法类型为数字
     RESERVED = 2  # 正则表达式词法类型为保留字
