@@ -40,6 +40,7 @@ def doSyntaxAnalysis(reList: list) -> str:
     actionListText = ""
     gotoListText = ""
 
+    # Finished: get action table string and goto table string from file
     if actionListPath is not None:
         f = open(actionListPath, 'r', encoding='utf-8')
         actionListText = f.read()
@@ -56,9 +57,8 @@ def doSyntaxAnalysis(reList: list) -> str:
         print("Can't get goto table file!")
         return
 
+    # Finished: get action table and goto table
     actionTable, gotoTable = parseTextToSyntaxTable(actionListText, gotoListText)
-    # Finished: get action table and gotoT table
-
     print("Print the action table:")
     for row in actionTable:
         for action in row:
@@ -70,22 +70,22 @@ def doSyntaxAnalysis(reList: list) -> str:
             print(goto, end=" ")
         print()
 
-    reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
     # Finished: get nfaGraphList of every regular expression
+    reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
     if (reNfaGraphList == "error"):
         print("Syntax Error: Please check your input")
 
-    print("Print the NFA graph")
+    print("Print the NFA graphs: ")
     num = 0
     for reNfaGraph in reNfaGraphList:
         print("NFA graph {}".format(num))
         num = num + 1
         print(reNfaGraph)
-    reDfaTotalGraph = DfaConstruct(reNfaGraphList)
-    # unfinished: parse nfa Graph to dfa graph and get total dfa
 
-    for reDfaGraph in reDfaTotalGraph:
-        print(reDfaGraph)
+    # # unfinished: parse nfa Graph to dfa graph and get total dfa
+    reDfaTotalGraph = DfaConstruct(reNfaGraphList)
+    # for reDfaGraph in reDfaTotalGraph:
+    #     print(reDfaGraph)
 
     return
 
