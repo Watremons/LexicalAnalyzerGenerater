@@ -49,3 +49,33 @@ class NfaGraph:
                     stateQueue.append(edge.nextState)
                 nowState.visited = 1
         return returnStr
+
+
+# Function: get epsilon closure of states
+def epsilonClosure(startStateList: set):
+    eClosure = set()
+    outEdgeList = set()
+    for nowState in startStateList:
+        eClosure.add(nowState)
+
+    while True:
+        eClosureCopy = eClosure.copy()
+        for state in eClosureCopy:
+            print(state.stateId)
+            for edge in state.edgeList:
+                if edge.driverChar == "ep":
+                    eClosure.add(edge.nextState)
+                else:
+                    outEdgeList.add(edge)
+        if len(eClosure) == len(eClosureCopy):
+            break
+    return eClosure, outEdgeList
+
+
+# Function: get move set of closure and char
+def move(outEdgeList: set, driverChar: str) -> frozenset:
+    arriveStateList = set()
+    for edge in outEdgeList:
+        if edge.driverChar == driverChar:
+            arriveStateList.add(edge.nextState)
+    return frozenset(arriveStateList)
