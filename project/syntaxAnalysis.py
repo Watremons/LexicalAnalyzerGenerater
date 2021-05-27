@@ -1,6 +1,4 @@
-from project.lib.dfa import DfaState, DfaConstruct
-from project.lib.nfa import NfaState
-from project.lib.regularExpression import RegularExpression
+from project.lib.dfa import DfaConstruct
 
 from project.syntaxAnalysisTable import parseTextToSyntaxTable
 from project.syntaxAnalysisLR import doLRSyntaxAnalysis, generateTestList
@@ -60,15 +58,13 @@ def doSyntaxAnalysis(reList: list) -> str:
     # Finished: get action table and goto table
     actionTable, gotoTable = parseTextToSyntaxTable(actionListText, gotoListText)
     print("Print the action table:")
-    for row in actionTable:
-        for action in row:
+    for i in range(len(actionTable)):
+        for action in actionTable[i]:
             print(action, end=" ")
-        print()
-    print("Print the goto table:")
-    for row in gotoTable:
-        for goto in row:
-            print(goto, end=" ")
-        print()
+        print("\t", end="")
+        for goto in gotoTable[i]:
+            print("{}".format(goto).ljust(2, " "), end="")
+        print("")
 
     # Finished: get nfaGraphList of every regular expression
     reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
@@ -82,15 +78,16 @@ def doSyntaxAnalysis(reList: list) -> str:
         num = num + 1
         print(reNfaGraph)
 
-    # # unfinished: parse nfa Graph to dfa graph and get total dfa
-    reDfaTotalGraph = DfaConstruct(reNfaGraphList)
-    # for reDfaGraph in reDfaTotalGraph:
+    # unfinished: parse nfa Graph to dfa graph and get total dfa
+    reDfaGraphList = DfaConstruct(reNfaGraphList)
+    # for reDfaGraph in reDfaGraphList:
     #     print(reDfaGraph)
 
-    return
+    # return reDfaGraph
+    return reDfaGraphList
 
 
 if __name__ == "__main__":
     reList = generateTestList()
     # reList.append(RegularExpression(,,,,))
-    doSyntaxAnalysis(reList)
+    dfaGraphList = doSyntaxAnalysis(reList)
