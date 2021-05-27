@@ -6,3 +6,5 @@ RESERVED:1
 keyWord ~ i & f | t & h & e & n | e & l & s & e | e & n & d | r & e & p & e & a & t | u & n & t & i & l | r & e & a & d | w & r & i & t & e
 OPERATOR:4
 operator ~ : & = | = | < | + | - | * | / | ( | ) | ; | > & =
+COMMENT:5
+comment ~ { & ^ & }

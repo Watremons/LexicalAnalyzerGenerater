@@ -12,22 +12,16 @@ sys.path.append("../")
 def getTableFilePath():
     nowPath = os.path.dirname(__file__)
 
-    dirPath = os.path.join(nowPath, "lib")
-    if (os.path.isdir(dirPath)):
-        actionListPath = os.path.join(dirPath, "re1.txt")
-        gotoListPath = os.path.join(dirPath, "gotoList.txt")
+    if (os.path.isdir(nowPath)):
+        actionListPath = os.path.join(nowPath, "re1.txt")
 
         if (os.path.isfile(actionListPath)):
-            if (os.path.isfile(gotoListPath)):
-                return actionListPath, gotoListPath
-            else:
-                print("The file \'../lib/gotoList1.txt\' is not exist!")
-                return None
+            return actionListPath
         else:
-            print("The file \'../lib/re1.txt\' is not exist!")
+            print("The file \'../re1.txt\' is not exist!")
             return None
     else:
-        print("The dir \'../lib\' is not exist!")
+        print("The dir \'..\' is not exist!")
         return None
 
 
@@ -37,6 +31,7 @@ def getExpression(reList):
     name = ""
     remark = ""
     for nowElement in reList:
+        # print("now:"+nowElement)
         if nowElement == "digit" or nowElement == "fullDigit" or nowElement == "letter" or nowElement == "if" or nowElement == "then" or nowElement == "else" or nowElement == "end" or nowElement == "repeat" or nowElement == "until" or nowElement == "read" or nowElement == "write":
             classType = ElementType(1)
         elif str.isdigit(nowElement) or str.isupper(nowElement) or str.islower(
@@ -47,6 +42,8 @@ def getExpression(reList):
         name = nowElement
         el = Element(classType, name, remark)
         ansList.append(el)
+    el = Element(ElementType(2), '$', "")
+    ansList.append(el)
     return ansList
 
 
@@ -55,12 +52,13 @@ def prn_obj(obj):
 
 
 def doLexicalAnalysis():
-    actionListPath, gotoListPath = getTableFilePath()
+    actionListPath = getTableFilePath()
     f = open(actionListPath, 'r', encoding='utf-8')
 
     cnt = 0
     regularExpressionList = []
     lexcialclass = RegularExpression.LexcialType["NONE"]
+    flag = True
 
     for line in f.readlines():
         print(line)
@@ -70,12 +68,15 @@ def doLexicalAnalysis():
         tLine = line.replace("\n", "")
 
         if cnt % 2 == 0:
+            if flag == False:
+                continue
             reList = []
             expressionList = []
 
             lineTable = tLine.split('~')
             head = lineTable[0].strip()
             reList = lineTable[1].split(" ")
+            del(reList[0])
             print(reList)
 
             headElement = Element(ElementType(1), head, "")
@@ -87,13 +88,20 @@ def doLexicalAnalysis():
 
             cnt = 0
         else:
+            flag = True
             lineTable = tLine.split(':')
+            tName = lineTable[0].upper()
             myDict = RegularExpression.LexcialType
-            if myDict.get(lineTable[0], "sb") == 0:
-                lexcialclass = RegularExpression.LexcialType[lineTable[0]]
+            if myDict.get(tName, "sb") == 0:
+                if myDict[tName] != lineTable[1]:
+                    print("废物，你TM给楠总滚")
+                    flag = False
+                    continue
+                else:
+                    lexcialclass = RegularExpression.LexcialType[tName]
             else:
-                myDict[lineTable[0]]=lineTable[1]
-                lexcialclass = RegularExpression.LexcialType[lineTable[0]]
+                myDict[tName] = lineTable[1]
+                lexcialclass = RegularExpression.LexcialType[tName]
             # print(myDict.get("NONE","sb"))
             # print(myDict)
             print(lexcialclass)
