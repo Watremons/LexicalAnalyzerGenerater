@@ -1,6 +1,5 @@
 from project.lib.nfa import NfaGraph, NfaState, NfaEdge,\
                             EndType, epsilonClosure, move
-from project.lib.regularExpression import LexcialType
 
 
 class DfaState:
@@ -8,7 +7,7 @@ class DfaState:
 
     def __init__(
         self, edgeList: list, isEndState: bool,
-        endStateClass: LexcialType, coreStateList: frozenset
+        endStateClass: int, coreStateList: frozenset
     ):
         self.visited = 0
         self.isEndState = isEndState
@@ -28,7 +27,7 @@ class DfaEdge:
 
 class DfaGraph:
 
-    def __init__(self, startState: DfaState, endStateList: set, endStateType: EndType, endStateClass: LexcialType):
+    def __init__(self, startState: DfaState, endStateList: set, endStateType: EndType, endStateClass: int):
         self.startState = startState  # 起始状态，为DfaState类型
         self.endStateList = endStateList      # 结束状态，为DfaState类型
         self.endStateType = endStateType  # 结束状态类型，为EndType枚举类型
@@ -77,10 +76,6 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
     while index < len(nowStateList):
         eClosure, outEdgeList = epsilonClosure(nowStateList[index].coreStateList)
 
-        # if get a new state
-        # if reNfaGraph.endState in eClosure:
-        #     endFlag = True
-
         for outEdge in outEdgeList:
             arriveStateList = move(outEdgeList, driverChar=outEdge.driverChar)
             hasFlag = False
@@ -124,13 +119,27 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
 
 
 # Function: merge dfa graphs to a whole dfa
-def mergeDfaGraphs(reDfaGraphList: list):
+def mergeDfaGraphs(reDfaGraphList: list) -> DfaGraph:
+    # startState = DfaState(
+    #     isEndState=False,
+    #     endStateClass=RegularExpression.LexcialType[NONE],
+    #     edgeList=[],
+    #     coreStateList=frozenset()
+    # )
+
+    # for dfaGraph in reDfaGraphList:
+    #     for another in reDfaGraphList:
+    #         if dfaGraph is not another:
+    #             for edge1 in dfaGraph.startState.edgeList:
+    #                 for edge2 in another.startState.edgeList:
+    #                     if edge1.driverChar == edge2.driverChar:
+
     pass
 
 
 # Function: take nfa graph list and return the whole dfa graph
 def DfaConstruct(reNfaGraphList: list):
-    # Unfinished: transform every nfa graph to dfa graph
+    # Finished: transform every nfa graph to dfa graph
     reDfaGraphList = []
     for reNfaGraph in reNfaGraphList:
         reDfaGraphList.append(NfaToDfa(reNfaGraph=reNfaGraph))
@@ -142,8 +151,9 @@ def DfaConstruct(reNfaGraphList: list):
         num = num + 1
 
     # Unfinished: merge all dfa graphs to one dfa
-    # reDfaGraph = mergeDfaGraphs(reDfaGraphList=reDfaGraphList)
+    # reDfaTotalGraph = mergeDfaGraphs(reDfaGraphList=reDfaGraphList)
     # print("Print the whole DFA graph: ")
-    # print(reDfaGraph)
+    # print(reDfaTotalGraph)
 
-    # return reDfaGraph
+    # return reDfaTotalGraph
+    return reDfaGraphList

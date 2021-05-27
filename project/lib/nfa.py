@@ -1,5 +1,4 @@
 from enum import Enum
-from project.lib.regularExpression import LexcialType
 
 
 # 定义结束状态的类型
@@ -27,7 +26,7 @@ class NfaEdge:
 
 class NfaGraph:
 
-    def __init__(self, startState: NfaState, endState: NfaState, endStateType: EndType, endStateClass: LexcialType):
+    def __init__(self, startState: NfaState, endState: NfaState, endStateType: EndType, endStateClass: int):
         self.startState = startState  # 起始状态，为Dfa类型
         self.endState = endState      # 结束状态，为Dfa类型
         self.endStateType = endStateType  # 结束状态类型，为EndType枚举类型

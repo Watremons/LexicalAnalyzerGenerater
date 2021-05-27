@@ -1,4 +1,4 @@
-from project.lib.regularExpression import RegularExpression, LexcialType
+from project.lib.regularExpression import RegularExpression
 from project.lib.element import Element, ElementType
 from project.lib.action import Action, ActionType, ReduceType
 from project.lib.syntaxSymbol import \
@@ -274,7 +274,7 @@ def generateTestList():
             "用于测试的元素"
         ),
         expression=expression,
-        lexcialClass=LexcialType.RESERVED,
+        lexcialClass=RegularExpression.LexcialType["RESERVED"],
         remark="测试用例"
     )
 

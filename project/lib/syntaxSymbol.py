@@ -1,6 +1,5 @@
 from project.lib.nfa import NfaGraph, NfaEdge, NfaState, EndType
 from project.lib.element import Element
-from project.lib.regularExpression import LexcialType
 
 
 class E:
@@ -123,7 +122,7 @@ def nfaZeroOneCombine(E1: E) -> E:
 
 
 # Function: reduce E to id, create a simple nfa
-def nfaNew(element: Element, reType: LexcialType) -> E:
+def nfaNew(element: Element, reType: int) -> E:
     endState = NfaState(
         edgeList=[]
     )

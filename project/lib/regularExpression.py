@@ -1,18 +1,16 @@
-from enum import Enum
 from project.lib.element import Element, ElementType
 
 
-# 定义正则表达式词法类型
-class LexcialType(Enum):
-    NONE = -1  # 错位类型
-    IDENTIFIER = 0  # 正则表达式词法类型为变量
-    NUMERIC = 1  # 正则表达式词法类型为数字
-    RESERVED = 2  # 正则表达式词法类型为保留字
-
-
 class RegularExpression:
+    # 定义正则表达式词法类型
+    LexcialType = {
+        "NONE": 0,
+        "IDENTIFIER": 2,
+        "NUMERIC": 3,
+        "RESERVED": 1
+    }
 
-    def __init__(self, headElement: Element, expression: list, lexcialClass: LexcialType, remark="Nothing"):
+    def __init__(self, headElement: Element, expression: list, lexcialClass: int, remark="Nothing"):
         self.headElement = headElement  # 元素头部元素，为Element类型元素
         self.expression = expression  # 正则表达式的主体部分, 用element类型的list表示
         self.lexcialClass = lexcialClass  # 正则表达式的类型，为LexcialType
@@ -32,7 +30,7 @@ if __name__ == "__main__":
     r = RegularExpression(
         Element(1, ElementType.CHARACTOR, "0", "测试"),
         "0",
-        LexcialType.IDENTIFIER,
+        RegularExpression.LexcialType["IDENTIFIER"],
         "测试表达式子",
     )
 
