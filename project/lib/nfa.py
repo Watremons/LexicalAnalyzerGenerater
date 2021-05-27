@@ -60,7 +60,7 @@ def epsilonClosure(startStateList: set):
     while True:
         eClosureCopy = eClosure.copy()
         for state in eClosureCopy:
-            print(state.stateId)
+            # print(state.stateId)
             for edge in state.edgeList:
                 if edge.driverChar == "ep":
                     eClosure.add(edge.nextState)
