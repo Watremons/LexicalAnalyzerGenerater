@@ -2,7 +2,7 @@ from posixpath import lexists
 from project.lib.element import Element, ElementType
 from project.lib.dfa import DfaState, DfaConstruct
 from project.lib.nfa import NfaState
-from project.lib.regularExpression import LexcialType, RegularExpression
+from project.lib.regularExpression import RegularExpression
 
 import os
 import sys
@@ -15,7 +15,7 @@ def getTableFilePath():
     dirPath = os.path.join(nowPath, "lib")
     if (os.path.isdir(dirPath)):
         actionListPath = os.path.join(dirPath, "re1.txt")
-        gotoListPath = os.path.join(dirPath, "gotoList1.txt")
+        gotoListPath = os.path.join(dirPath, "gotoList.txt")
 
         if (os.path.isfile(actionListPath)):
             if (os.path.isfile(gotoListPath)):
@@ -49,42 +49,60 @@ def getExpression(reList):
         ansList.append(el)
     return ansList
 
-def prn_obj(obj): 
-  print(obj.__dict__)
 
-def doSyntaxAnalysis():
+def prn_obj(obj):
+    print(obj.__dict__)
+
+
+def doLexicalAnalysis():
     actionListPath, gotoListPath = getTableFilePath()
     f = open(actionListPath, 'r', encoding='utf-8')
 
+    cnt = 0
     regularExpressionList = []
+    lexcialclass = RegularExpression.LexcialType["NONE"]
+
     for line in f.readlines():
         print(line)
-        tLine = line.replace("\n", "")
+
         lineTable = []
-        reList = []
-        expressionList = []
+        cnt += 1
+        tLine = line.replace("\n", "")
 
-        lineTable = tLine.split('~')
-        head = lineTable[0].strip()
-        reList = lineTable[1].split(" ")
-        print(reList)
+        if cnt % 2 == 0:
+            reList = []
+            expressionList = []
 
-        headElement = Element(ElementType(1), head, "")
-        expressionList = getExpression(reList)
-        lexcialclass = LexcialType(0)
-        if head == "digit" or head == "fullDigit" or head == "int":
-            lexcialclass = LexcialType(1)
-        elif head == "id":
-            lexcialclass = LexcialType(0)
+            lineTable = tLine.split('~')
+            head = lineTable[0].strip()
+            reList = lineTable[1].split(" ")
+            print(reList)
+
+            headElement = Element(ElementType(1), head, "")
+            expressionList = getExpression(reList)
+
+            re = RegularExpression(headElement, expressionList, lexcialclass,
+                                   "")
+            regularExpressionList.append(re)
+
+            cnt = 0
         else:
-            lexcialclass = LexcialType(2)
+            lineTable = tLine.split(':')
+            myDict = RegularExpression.LexcialType
+            if myDict.get(lineTable[0], "sb") == 0:
+                lexcialclass = RegularExpression.LexcialType[lineTable[0]]
+            else:
+                myDict[lineTable[0]]=lineTable[1]
+                lexcialclass = RegularExpression.LexcialType[lineTable[0]]
+            # print(myDict.get("NONE","sb"))
+            # print(myDict)
+            print(lexcialclass)
 
-        re=RegularExpression(headElement,expressionList,lexcialclass,"")
-        regularExpressionList.append(re)
         # print(expressionList[0])
         # print(head+"hhh")
 
         # RegularExpression re(W)
+
     for obj in regularExpressionList:
         print("head:")
         print(prn_obj(obj.headElement))
@@ -99,4 +117,4 @@ def doSyntaxAnalysis():
 
 if __name__ == "__main__":
     # reList.append(RegularExpression(,,,,))
-    doSyntaxAnalysis()
+    doLexicalAnalysis()
