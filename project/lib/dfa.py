@@ -125,20 +125,6 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
 
 # Function: merge dfa graphs to a whole dfa
 def mergeDfaGraphs(reDfaGraphList: list) -> DfaGraph:
-    # startState = DfaState(
-    #     isEndState=False,
-    #     endStateClass=RegularExpression.LexcialType[NONE],
-    #     edgeList=[],
-    #     coreStateList=frozenset()
-    # )
-
-    # for dfaGraph in reDfaGraphList:
-    #     for another in reDfaGraphList:
-    #         if dfaGraph is not another:
-    #             for edge1 in dfaGraph.startState.edgeList:
-    #                 for edge2 in another.startState.edgeList:
-    #                     if edge1.driverChar == edge2.driverChar:
-
     pass
 
 
