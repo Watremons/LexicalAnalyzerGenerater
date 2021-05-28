@@ -8,6 +8,7 @@ from project.lib.syntaxSymbol import \
 
 def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list:
     reNfaGraphList = []
+    # traverse all regular expressions
     for re in reList:
         print(re.headElement)
         # Symbol table is reList
@@ -17,15 +18,17 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
         nowState = -1
         index = 0
         length = len(re.expression)
-
+        # start LR syntax analysis
         while (len(stateStack) != 0):
             if index > length:
                 print("Syntax Error: the re is end before get accept state")
                 return "error"
             nowState = stateStack[-1]
             nowElement = re.expression[index]
+            # get a corresponding action
             nowAction = getAction(nowState, nowElement, actionTable)
 
+            # do action
             if nowAction.actionType == ActionType.SHIFT:
                 stateStack.append(nowAction.shiftNum)
                 symbolStack.append(nowElement)
@@ -124,11 +127,13 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
                 break
             elif nowAction.actionType == ActionType.ERROR:
                 print("Syntax Error: get a wrong action")
+                print("Now state: {}\tNow element: {}".format(nowState, nowElement))
                 return "error"
             else:
                 print("Unknown Error: get a unknown type of action")
                 return "error"
 
+        # Handle exceptions
         if index != length-1:
             print("Syntax Error: get accept state but the re is not end")
             return "error"

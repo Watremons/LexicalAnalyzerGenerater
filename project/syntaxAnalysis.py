@@ -70,6 +70,7 @@ def doSyntaxAnalysis(reList: list) -> str:
     reNfaGraphList = doLRSyntaxAnalysis(reList, actionTable, gotoTable)
     if (reNfaGraphList == "error"):
         print("Syntax Error: Please check your input")
+        return "error"
 
     print("Print the NFA graphs: ")
     num = 0
