@@ -27,7 +27,10 @@ class DfaEdge:
 
 class DfaGraph:
 
-    def __init__(self, startState: DfaState, endStateList: set, endStateType: EndType, endStateClass: int):
+    def __init__(
+        self, startState: DfaState,
+        endStateList: set, endStateType: EndType, endStateClass: int
+    ):
         self.startState = startState  # 起始状态，为DfaState类型
         self.endStateList = endStateList      # 结束状态，为DfaState类型
         self.endStateType = endStateType  # 结束状态类型，为EndType枚举类型
@@ -41,12 +44,12 @@ class DfaGraph:
             nowState = stateQueue.pop()
             if nowState.visited == 0:
                 for edge in nowState.edgeList:
-                    if edge.nextState.isEndState is True:
-                        returnStr = returnStr + "{} -> {} by {} end get{}\n".format(
+                    if edge.nextState.isEndState:
+                        returnStr = returnStr + "{} -> {} by {} end get {}\n".format(
                             nowState.stateId,
                             edge.nextState.stateId,
                             edge.driverChar,
-                            edge.nextState.endStateType.name
+                            edge.nextState.endStateClass
                         )
                     else:
                         returnStr = returnStr + "{} -> {} by {}\n".format(
@@ -75,6 +78,10 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
 
     while index < len(nowStateList):
         eClosure, outEdgeList = epsilonClosure(nowStateList[index].coreStateList)
+        for state in eClosure:
+            if state.stateId == reNfaGraph.endState.stateId:
+                nowStateList[index].isEndState = True
+                endStateList.append(nowStateList[index])
 
         for outEdge in outEdgeList:
             arriveStateList = move(outEdgeList, driverChar=outEdge.driverChar)
@@ -82,7 +89,7 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
             for state in nowStateList:
                 if state.coreStateList == arriveStateList:
                     hasFlag = True
-                    print("Get a state which has appeared")
+                    print("Get a state {} which has appeared\n".format(state.stateId))
                     nowStateList[index].edgeList.append(
                         DfaEdge(
                             driverChar=outEdge.driverChar,
@@ -92,14 +99,12 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
 
             if not hasFlag:
                 newState = DfaState(
-                    isEndState=(reNfaGraph.endState in arriveStateList),
+                    isEndState=False,
                     endStateClass=reNfaGraph.endStateClass,
                     coreStateList=arriveStateList,
                     edgeList=[]
                 )
                 nowStateList.append(newState)
-                if newState.isEndState:
-                    endStateList.append(newState)
                 nowStateList[index].edgeList.append(
                     DfaEdge(
                         driverChar=outEdge.driverChar,
@@ -138,7 +143,7 @@ def mergeDfaGraphs(reDfaGraphList: list) -> DfaGraph:
 
 
 # Function: take nfa graph list and return the whole dfa graph
-def DfaConstruct(reNfaGraphList: list):
+def DfaConstruct(reNfaGraphList: list) -> list:
     # Finished: transform every nfa graph to dfa graph
     reDfaGraphList = []
     for reNfaGraph in reNfaGraphList:
@@ -149,11 +154,6 @@ def DfaConstruct(reNfaGraphList: list):
         print("DFA graph {}".format(num))
         print(reNfaGraph)
         num = num + 1
-
-    # Unfinished: merge all dfa graphs to one dfa
-    # reDfaTotalGraph = mergeDfaGraphs(reDfaGraphList=reDfaGraphList)
-    # print("Print the whole DFA graph: ")
-    # print(reDfaTotalGraph)
 
     # return reDfaTotalGraph
     return reDfaGraphList
