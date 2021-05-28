@@ -34,7 +34,7 @@ def getExpression(reList):
         if nowElement ==" ":
             continue
         # print("now:"+nowElement)
-        if nowElement == "|" or nowElement == "(" or nowElement == ")" or nowElement == "&" or nowElement == "@" or nowElement == "#" or nowElement == "?":
+        if nowElement == "|" or nowElement == "[" or nowElement == "]" or nowElement == "&" or nowElement == "@" or nowElement == "#" or nowElement == "?":
             classType = ElementType(2)
         else:
             classType = ElementType(0)
