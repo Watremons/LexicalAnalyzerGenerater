@@ -19,4 +19,4 @@ class Element:
         self.remark = remark  # 元素备注
 
     def __str__(self):
-        return "{}: {}  [type:{}]".format(self.elementId,  self.name, self.classType)
+        return "{}: {}  [type:{}]".format(self.elementId, self.name, self.classType)

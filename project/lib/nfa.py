@@ -11,8 +11,8 @@ class NfaState:
     STATENUM = 0
 
     def __init__(self, edgeList: list):
-        self.visited = 0
-        self.stateId = NfaState.STATENUM
+        self.visited = 0  # 用以遍历，标记是否已经访问
+        self.stateId = NfaState.STATENUM  # 记录状态号，类静态变量，自增
         NfaState.STATENUM = NfaState.STATENUM + 1
         self.edgeList = edgeList  # 状态出边，为EdgeList类型
 
