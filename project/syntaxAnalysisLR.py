@@ -146,16 +146,16 @@ def doLRSyntaxAnalysis(reList: list, actionTable: list, gotoTable: list) -> list
 
 
 def getAction(nowState, nowElement, actionTable):
-    if (nowElement.classType == ElementType.CHARACTOR):
+    if (nowElement.classType == ElementType.CHARACTER):
         return actionTable[nowState][0]
     elif (nowElement.classType == ElementType.OPERATOR):
         if (nowElement.name == "|"):
             return actionTable[nowState][1]
         elif (nowElement.name == "&"):
             return actionTable[nowState][2]
-        elif (nowElement.name == "("):
+        elif (nowElement.name == "]"):
             return actionTable[nowState][3]
-        elif (nowElement.name == ")"):
+        elif (nowElement.name == "["):
             return actionTable[nowState][4]
         elif (nowElement.name == "$"):
             return actionTable[nowState][5]
@@ -183,7 +183,7 @@ def generateTestList():
     expression = []
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="i",
         )
     )
@@ -195,7 +195,7 @@ def generateTestList():
     )
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="f",
         )
     )
@@ -208,12 +208,12 @@ def generateTestList():
     expression.append(
         Element(
             classType=ElementType.OPERATOR,
-            name="(",
+            name="[",
         )
     )
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="e",
         )
     )
@@ -225,14 +225,14 @@ def generateTestList():
     )
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="l",
         )
     )
     expression.append(
         Element(
             classType=ElementType.OPERATOR,
-            name=")",
+            name="]",
         )
     )
     expression.append(
@@ -249,7 +249,7 @@ def generateTestList():
     )
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="s",
         )
     )
@@ -261,7 +261,7 @@ def generateTestList():
     )
     expression.append(
         Element(
-            classType=ElementType.CHARACTOR,
+            classType=ElementType.CHARACTER,
             name="e",
         )
     )

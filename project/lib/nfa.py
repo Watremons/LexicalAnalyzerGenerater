@@ -75,6 +75,6 @@ def epsilonClosure(startStateList: set):
 def move(outEdgeList: set, driverChar: str) -> frozenset:
     arriveStateList = set()
     for edge in outEdgeList:
-        if edge.driverChar == driverChar:
+        if edge.driverChar == driverChar or edge.driverChar == "^" or driverChar == "^":
             arriveStateList.add(edge.nextState)
     return frozenset(arriveStateList)
