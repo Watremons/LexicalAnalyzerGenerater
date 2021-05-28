@@ -3,7 +3,7 @@ from enum import Enum
 
 # 定义元素类型
 class ElementType(Enum):
-    CHARACTOR = 0  # 元素类型为输入字符
+    CHARACTER = 0  # 元素类型为输入字符
     VARIANT = 1  # 元素类型为正则表达式
     OPERATOR = 2  # 元素类型为运算符
 
