@@ -31,14 +31,13 @@ def getExpression(reList):
     name = ""
     remark = ""
     for nowElement in reList:
+        if nowElement ==" ":
+            continue
         # print("now:"+nowElement)
-        if nowElement == "digit" or nowElement == "fullDigit" or nowElement == "letter" or nowElement == "if" or nowElement == "then" or nowElement == "else" or nowElement == "end" or nowElement == "repeat" or nowElement == "until" or nowElement == "read" or nowElement == "write":
-            classType = ElementType(1)
-        elif str.isdigit(nowElement) or str.isupper(nowElement) or str.islower(
-                nowElement):
-            classType = ElementType(0)
-        else:
+        if nowElement == "|" or nowElement == "(" or nowElement == ")" or nowElement == "&" or nowElement == "@" or nowElement == "#" or nowElement == "?":
             classType = ElementType(2)
+        else:
+            classType = ElementType(0)
         name = nowElement
         el = Element(classType, name, remark)
         ansList.append(el)
@@ -75,12 +74,12 @@ def doLexicalAnalysis():
 
             lineTable = tLine.split('~')
             head = lineTable[0].strip()
-            reList = lineTable[1].split(" ")
-            del(reList[0])
-            print(reList)
+            # reList = lineTable[1].split(" ")
+            # del(lineTable[1])
+            # print(reList)
 
             headElement = Element(ElementType(1), head, "")
-            expressionList = getExpression(reList)
+            expressionList = getExpression(lineTable[1])
 
             re = RegularExpression(headElement, expressionList, lexcialclass,
                                    "")
