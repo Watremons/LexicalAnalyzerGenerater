@@ -67,7 +67,7 @@ def doLexicalAnalysis():
         tLine = line.replace("\n", "")
 
         if cnt % 2 == 0:
-            if flag == False:
+            if flag is False:
                 continue
             reList = []
             expressionList = []
@@ -99,7 +99,7 @@ def doLexicalAnalysis():
                 else:
                     lexcialclass = RegularExpression.LexcialType[tName]
             else:
-                myDict[tName] = lineTable[1]
+                myDict[tName] = int(lineTable[1])
                 lexcialclass = RegularExpression.LexcialType[tName]
             # print(myDict.get("NONE","sb"))
             # print(myDict)
