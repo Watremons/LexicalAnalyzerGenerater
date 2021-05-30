@@ -153,9 +153,9 @@ def getAction(nowState, nowElement, actionTable):
             return actionTable[nowState][1]
         elif (nowElement.name == "&"):
             return actionTable[nowState][2]
-        elif (nowElement.name == "]"):
-            return actionTable[nowState][3]
         elif (nowElement.name == "["):
+            return actionTable[nowState][3]
+        elif (nowElement.name == "]"):
             return actionTable[nowState][4]
         elif (nowElement.name == "$"):
             return actionTable[nowState][5]
