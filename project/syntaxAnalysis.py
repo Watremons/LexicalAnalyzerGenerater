@@ -79,16 +79,16 @@ def doSyntaxAnalysis(reList: list) -> str:
         num = num + 1
         print(reNfaGraph)
 
-    # unfinished: parse nfa Graph to dfa graph and get total dfa
-    reDfaGraphList = DfaConstruct(reNfaGraphList)
-    # for reDfaGraph in reDfaGraphList:
-    #     print(reDfaGraph)
+    # Finished: parse nfa Graph to dfa graph and get total dfa
+    reDfaGraph = DfaConstruct(reNfaGraphList)
+    print("Print the total dfa graph: ")
+    print(reDfaGraph)
 
     # return reDfaGraph
-    return reDfaGraphList
+    return reDfaGraph
 
 
 if __name__ == "__main__":
     reList = generateTestList()
     # reList.append(RegularExpression(,,,,))
-    dfaGraphList = doSyntaxAnalysis(reList)
+    reDfaGraph = doSyntaxAnalysis(reList)
