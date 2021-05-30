@@ -1,5 +1,6 @@
 from project.lib.nfa import NfaGraph, NfaState, NfaEdge,\
                             EndType, epsilonClosure, move
+from project.lib.regularExpression import RegularExpression
 
 
 class DfaState:
@@ -75,28 +76,32 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
     nowStateList.append(startState)
     endStateList = []
     index = 0
-
+    # Handle NFA to DfA
     while index < len(nowStateList):
+        # Get e-closure set and out edge list of a DFA state by coreStateList
         eClosure, outEdgeList = epsilonClosure(nowStateList[index].coreStateList)
         for state in eClosure:
             if state.stateId == reNfaGraph.endState.stateId:
                 nowStateList[index].isEndState = True
                 endStateList.append(nowStateList[index])
 
+        # For every char can be input, get its move set
         for outEdge in outEdgeList:
             arriveStateList = move(outEdgeList, driverChar=outEdge.driverChar)
             hasFlag = False
+            # if next state existed, create an edge to it
             for state in nowStateList:
                 if state.coreStateList == arriveStateList:
                     hasFlag = True
-                    print("Get a state {} which has appeared\n".format(state.stateId))
+                    # print("Get a state {} which has appeared\n".format(state.stateId))
                     nowStateList[index].edgeList.append(
                         DfaEdge(
                             driverChar=outEdge.driverChar,
                             nextState=state
                         )
                     )
-
+                    break
+            # if not, create a new DFA state to be pointed
             if not hasFlag:
                 newState = DfaState(
                     isEndState=False,
@@ -125,11 +130,88 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
 
 # Function: merge dfa graphs to a whole dfa
 def mergeDfaGraphs(reDfaGraphList: list) -> DfaGraph:
-    pass
+    DfaState.STATENUM = 0
+    # Merge NFA graphs to a NFA graph
+    # Construce start state
+    nowStateList = []
+    startState = DfaState(
+        isEndState=False,
+        endStateClass=RegularExpression.LexcialType["NONE"],
+        coreStateList=[],
+        edgeList=[]
+    )
+    nowStateList.append(startState)
+
+    # To construct end state
+    # Get all end state and get the max priority as endStateClass
+    rawEndStateList = []
+    nowValueType = len(RegularExpression.LexcialType)
+    for reDfaGraph in reDfaGraphList:
+        rawEndStateList.extend(reDfaGraph.endStateList)
+        nowValueType = min([nowValueType, reDfaGraphList[0].startState.endStateClass])
+        startState.coreStateList.append(reDfaGraph.startState)
+    startState.endStateClass = 0 if nowValueType == len(RegularExpression.LexcialType) else nowValueType
+    startState.coreStateList = frozenset(startState.coreStateList)
+
+    index = 0
+    endStateList = []
+    # Handle NFA to DFA
+    while index < len(nowStateList):
+        # Get e-closure set and out edge list of a DFA state by coreStateList
+        eClosure, outEdgeList = epsilonClosure(nowStateList[index].coreStateList)
+        nowValueType = len(RegularExpression.LexcialType)
+        for state in eClosure:
+            nowValueType = min({nowValueType, state.endStateClass})
+            if state in rawEndStateList:
+                nowStateList[index].isEndState = True
+                endStateList.append(nowStateList[index])
+        nowStateList[index].endStateClass = 0 if nowValueType == len(RegularExpression.LexcialType) else nowValueType
+
+        # For every char can be input, get its move set
+        for outEdge in outEdgeList:
+            arriveStateList = move(outEdgeList, driverChar=outEdge.driverChar)
+            hasFlag = False
+            # if next state existed, create an edge to it
+            for state in nowStateList:
+                if state.coreStateList == arriveStateList:
+                    hasFlag = True
+                    # print("Get a state {} which has appeared\n".format(state.stateId))
+                    nowStateList[index].edgeList.append(
+                        DfaEdge(
+                            driverChar=outEdge.driverChar,
+                            nextState=state
+                        )
+                    )
+                    break
+            # if not, create a new DFA state to be pointed
+            if not hasFlag:
+                newState = DfaState(
+                    isEndState=False,
+                    endStateClass=RegularExpression.LexcialType["NONE"],
+                    coreStateList=arriveStateList,
+                    edgeList=[]
+                )
+                nowStateList.append(newState)
+                nowStateList[index].edgeList.append(
+                    DfaEdge(
+                        driverChar=outEdge.driverChar,
+                        nextState=newState
+                    )
+                )
+        index = index + 1
+
+    reDfaGraph = DfaGraph(
+        startState=startState,
+        endStateList=endStateList,
+        endStateType=EndType.INCLUDE,
+        endStateClass=RegularExpression.LexcialType["NONE"]
+    )
+
+    return reDfaGraph
 
 
 # Function: take nfa graph list and return the whole dfa graph
-def DfaConstruct(reNfaGraphList: list) -> list:
+def DfaConstruct(reNfaGraphList: list) -> DfaGraph:
     # Finished: transform every nfa graph to dfa graph
     reDfaGraphList = []
     for reNfaGraph in reNfaGraphList:
@@ -141,5 +223,7 @@ def DfaConstruct(reNfaGraphList: list) -> list:
         print(reNfaGraph)
         num = num + 1
 
+    # Unfinished: merge dfa graphs to a whole dfa
+    reDfaGraph = mergeDfaGraphs(reDfaGraphList=reDfaGraphList)
     # return reDfaTotalGraph
-    return reDfaGraphList
+    return reDfaGraph
