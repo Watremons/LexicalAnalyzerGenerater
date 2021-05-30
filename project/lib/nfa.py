@@ -50,7 +50,7 @@ class NfaGraph:
         return returnStr
 
 
-# Function: get epsilon closure of states
+# Function: get epsilon closure and out edge list of states
 def epsilonClosure(startStateList: set):
     eClosure = set()
     outEdgeList = set()
@@ -75,6 +75,6 @@ def epsilonClosure(startStateList: set):
 def move(outEdgeList: set, driverChar: str) -> frozenset:
     arriveStateList = set()
     for edge in outEdgeList:
-        if edge.driverChar == driverChar or edge.driverChar == "^" or driverChar == "^":
+        if edge.driverChar == driverChar:
             arriveStateList.add(edge.nextState)
     return frozenset(arriveStateList)
