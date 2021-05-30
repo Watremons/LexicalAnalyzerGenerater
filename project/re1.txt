@@ -7,4 +7,4 @@ keyWord ~ i & f | t & h & e & n | e & l & s & e | e & n & d | r & e & p & e & a 
 OPERATOR:4
 operator ~ : & = | = | < | + | - | * | / | ( | ) | ; | > & =
 COMMENT:5
-comment ~ { & ^ & }
+comment ~ { & ^@ & }
