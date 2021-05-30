@@ -223,7 +223,7 @@ def DfaConstruct(reNfaGraphList: list) -> DfaGraph:
         print(reNfaGraph)
         num = num + 1
 
-    # Unfinished: merge dfa graphs to a whole dfa
+    # Finished: merge dfa graphs to a whole dfa
     reDfaGraph = mergeDfaGraphs(reDfaGraphList=reDfaGraphList)
     # return reDfaTotalGraph
     return reDfaGraph
