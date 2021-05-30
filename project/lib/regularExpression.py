@@ -5,9 +5,9 @@ class RegularExpression:
     # 定义正则表达式词法类型
     LexcialType = {
         "NONE": 0,
-        "IDENTIFIER": 2,
-        "NUMERIC": 3,
-        "RESERVED": 1
+        # "IDENTIFIER": 2,
+        # "NUMERIC": 3,
+        # "RESERVED": 1
     }
 
     def __init__(self, headElement: Element, expression: list, lexcialClass: int, remark="Nothing"):
