@@ -4,6 +4,7 @@
 }
 read x; { input an integer }
 read iff;
+read num1[0];
 if 0 < x then { don't compute if x <= 0 }
   fact := 1;
   repeat
