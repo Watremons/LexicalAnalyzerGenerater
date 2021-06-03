@@ -1,7 +1,4 @@
-from posixpath import lexists
 from project.lib.element import Element, ElementType
-from project.lib.dfa import DfaState, DfaConstruct
-from project.lib.nfa import NfaState
 from project.lib.regularExpression import RegularExpression
 
 import os

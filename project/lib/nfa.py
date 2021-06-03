@@ -26,10 +26,9 @@ class NfaEdge:
 
 class NfaGraph:
 
-    def __init__(self, startState: NfaState, endState: NfaState, endStateType: EndType, endStateClass: int):
+    def __init__(self, startState: NfaState, endState: NfaState, endStateClass: int):
         self.startState = startState  # 起始状态，为Dfa类型
         self.endState = endState      # 结束状态，为Dfa类型
-        self.endStateType = endStateType  # 结束状态类型，为EndType枚举类型
         self.endStateClass = endStateClass  # 结束得到的类的类型，为LexcialType枚举类型
 
     def __str__(self):

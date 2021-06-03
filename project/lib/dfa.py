@@ -1,5 +1,4 @@
-from project.lib.nfa import NfaGraph, NfaState, NfaEdge,\
-                            EndType, epsilonClosure, move
+from project.lib.nfa import NfaGraph, epsilonClosure, move
 from project.lib.regularExpression import RegularExpression
 
 
@@ -30,11 +29,10 @@ class DfaGraph:
 
     def __init__(
         self, startState: DfaState,
-        endStateList: set, endStateType: EndType, endStateClass: int
+        endStateList: set, endStateClass: int
     ):
         self.startState = startState  # 起始状态，为DfaState类型
         self.endStateList = endStateList      # 结束状态，为DfaState类型
-        self.endStateType = endStateType  # 结束状态类型，为EndType枚举类型
         self.endStateClass = endStateClass  # 结束得到的类的类型，为LexcialType枚举类型
 
     def __str__(self):
@@ -121,7 +119,6 @@ def NfaToDfa(reNfaGraph: NfaGraph) -> DfaGraph:
     reDfaGraph = DfaGraph(
         startState=startState,
         endStateList=endStateList,
-        endStateType=EndType.INCLUDE,
         endStateClass=reNfaGraph.endStateClass
     )
 
@@ -203,7 +200,6 @@ def mergeDfaGraphs(reDfaGraphList: list) -> DfaGraph:
     reDfaGraph = DfaGraph(
         startState=startState,
         endStateList=endStateList,
-        endStateType=EndType.INCLUDE,
         endStateClass=RegularExpression.LexcialType["NONE"]
     )
 

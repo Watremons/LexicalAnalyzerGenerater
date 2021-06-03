@@ -1,4 +1,4 @@
-from project.lib.dfa import DfaGraph, DfaState, DfaEdge
+from project.lib.dfa import DfaGraph
 from project.syntaxAnalysis import doSyntaxAnalysis
 from project.lib.regularExpression import RegularExpression
 from project.lexicalAnalysis import doLexicalAnalysis
@@ -111,7 +111,7 @@ def testDfaGraphByFile(dfaGraph: DfaGraph, inputFileName: str) -> list:
 
 if __name__ == "__main__":
     reList = doLexicalAnalysis()
-
+    print(reList)
     dfaGraph = doSyntaxAnalysis(reList)
     if dfaGraph == "error":
         print("Error: the input regular expressions have syntax error")

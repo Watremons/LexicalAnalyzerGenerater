@@ -1,4 +1,4 @@
-from project.lib.nfa import NfaGraph, NfaEdge, NfaState, EndType
+from project.lib.nfa import NfaGraph, NfaEdge, NfaState
 from project.lib.element import Element
 
 
@@ -48,7 +48,6 @@ def nfaOrCombine(E1: E, E2: E) -> E:
     newNfaGraph = NfaGraph(
         startState=startState,
         endState=endState,
-        endStateType=EndType.INCLUDE,
         endStateClass=E1.nfa.endStateClass
     )
 
@@ -68,7 +67,6 @@ def nfaAndCombine(E1: E, E2: E) -> E:
         nfa=NfaGraph(
             startState=E1.nfa.startState,
             endState=E2.nfa.endState,
-            endStateType=EndType.INCLUDE,
             endStateClass=E1.nfa.endStateClass
         )
     )
@@ -142,7 +140,6 @@ def nfaNew(element: Element, reType: int) -> E:
     newNfaGraph = NfaGraph(
         startState=startState,
         endState=endState,
-        endStateType=EndType.INCLUDE,
         endStateClass=reType
     )
     newE = E(newNfaGraph)

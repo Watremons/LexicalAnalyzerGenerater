@@ -1,5 +1,4 @@
 from project.lib.dfa import DfaConstruct
-
 from project.syntaxAnalysisTable import parseTextToSyntaxTable
 from project.syntaxAnalysisLR import doLRSyntaxAnalysis, generateTestList
 import os
